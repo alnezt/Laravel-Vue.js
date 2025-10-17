@@ -1,6 +1,6 @@
 <template>
     <div class="form-container">
-        <!-- Autentificare -->
+
         <div class="auth-section">
             <button @click="handleLogin" type="button" class="login-btn">Autentifică-te</button>
             <span v-if="isAuthenticated" class="token-indicator">✅ Autentificat</span>
@@ -9,7 +9,7 @@
 
         <h2>Introduceți oferta în formular</h2>
         <form @submit.prevent="submitForm" class="insurance-form">
-            <!-- Date Asigurare -->
+
             <div class="form-section">
                 <h3>Datele asigurării</h3>
                 <div class="form-row">
@@ -24,7 +24,7 @@
                 </div>
             </div>
 
-            <!-- Date Proprietar -->
+
             <div class="form-section">
                 <h3>Date proprietar/asigurat</h3>
                 <div class="form-row">
@@ -289,7 +289,6 @@
 
             </div>
 
-            <!-- Date Adiționale -->
             <div class="form-section">
                 <h3>Date adiționale</h3>
                 <div class="form-group">
@@ -655,7 +654,7 @@ const handleCreatePolicy = async (offer) => {
 
         const result = await createPolicy(offer)
         if (result.success) {
-            // Actualizează oferta cu ID-ul poliței
+
             offer.policyId = result.policyId
             alert('Polița a fost creată cu succes! Acum poți descărca PDF-ul.')
         }

@@ -5,7 +5,7 @@
     <div class="container">
  <h1>Oferte asigurari</h1>
 
-        <AsigurariRCA />  <!-- 👈 Folosește numele corect al componentei -->
+        <AsigurariRCA />
 
     </div>
 
@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import AsigurariRCA from './components/AsigurariRCA.vue'  // 👈 Cale corectă
+import AsigurariRCA from './components/AsigurariRCA.vue'
 import TalonOCR from './components/TalonOCR.vue';
 </script>
 

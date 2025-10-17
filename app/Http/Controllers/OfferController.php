@@ -107,7 +107,6 @@ class OfferController extends Controller
                 $statusCode = $apiResponse->status();
                 $responseData = $apiResponse->json() ?? [];
 
-                // Păstrezi raw-ul
                 $rawResponses[$insurer] = [
                     'success' => $apiResponse->successful(),
                     'status' => $statusCode,
@@ -118,7 +117,7 @@ class OfferController extends Controller
                     'correlation_id' => $responseData['correlation_id'] ?? null,
                 ];
 
-                // Normalizezi pentru frontend
+
                 if ($apiResponse->successful()) {
                     $offer = $responseData['data']['offers'][0] ?? null;
 
@@ -157,7 +156,7 @@ class OfferController extends Controller
             }
         }
 
-        // Salvezi atât raw cât și normalizat (opțional, adaptabil la schema ta)
+
         $oferte = Offer::create([
             'insurance_data' => [
                 'raw' => $rawResponses,

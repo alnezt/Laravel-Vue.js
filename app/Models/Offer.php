@@ -8,7 +8,7 @@ class Offer extends Model
 {
     protected $table = 'oferte';
     protected $fillable = [
-        'insurance_data' // Va stoca tot JSON-ul
+        'insurance_data'
     ];
 
     protected $casts = [
