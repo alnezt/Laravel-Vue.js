@@ -1,61 +1,136 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel + Vue.js — Setup Guide
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> Proiect full-stack cu Laravel 12 (backend + API) și Vue.js (frontend), dezvoltat în cadrul internship-ului la Life is Hard, Cluj.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Cerințe
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- PHP >= 8.2
+- Composer
+- Node.js >= 18 + npm
+- MariaDB (sau MySQL)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Instalare
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 1. Clonează repo-ul
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+git clone https://github.com/alnezt/Laravel-Vue.js.git
+cd Laravel-Vue.js
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. Instalează dependențele PHP
 
-## Laravel Sponsors
+```bash
+composer install
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 3. Creează fișierul `.env`
 
-### Premium Partners
+```bash
+cp .env.example .env
+nano .env
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Modifică aceste linii:
 
-## Contributing
+```env
+APP_ENV=local
+APP_URL=http://localhost:8000
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel_vue
+DB_USERNAME=root         # sau userul tău MariaDB
+DB_PASSWORD=             # parola ta MariaDB
+```
 
-## Code of Conduct
+### 4. Generează cheia aplicației
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan key:generate
+```
 
-## Security Vulnerabilities
+### 5. Creează baza de date
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+sudo mariadb
+```
 
-## License
+```sql
+CREATE DATABASE laravel_vue;
+CREATE USER 'username'@'localhost' IDENTIFIED BY 'parola';
+GRANT ALL PRIVILEGES ON laravel_vue.* TO 'username'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+> Înlocuiește `username` și `parola` cu ce ai pus în `.env`.
+
+### 6. Rulează migrările
+
+```bash
+php artisan migrate
+```
+
+### 7. Instalează dependențele Node.js
+
+```bash
+npm install
+```
+
+---
+
+## Pornire
+
+Ai nevoie de **două terminale** deschise simultan:
+
+**Terminal 1 — Backend Laravel:**
+```bash
+php artisan serve
+```
+
+**Terminal 2 — Frontend Vue.js (Vite):**
+```bash
+npm run dev
+```
+
+Accesează aplicația la: **http://localhost:8000**
+
+---
+
+## Rute disponibile
+
+| Metodă | URL | Descriere |
+|--------|-----|-----------|
+| GET | `/` | Redirecționează automat către `/api/offer` |
+| GET | `/api/offer` | Frontend Vue.js — pagina principală |
+| GET | `/api/offer` | Listează toate ofertele |
+| POST | `/api/offer` | Creează o ofertă nouă |
+| POST | `/api/process-talon` | Procesează un talon prin OCR |
+
+---
+
+## Troubleshooting
+
+**`Address already in use` la `php artisan serve`**
+```bash
+php artisan serve --port=8001
+```
+
+**`No application encryption key`**
+```bash
+php artisan key:generate
+```
+
+**`Connection refused` la migrate**
+```bash
+sudo systemctl start mariadb
+```
+
+**Vue-ul nu se încarcă (pagină goală / erori JS)**  
+Asigură-te că rulează `npm run dev` în al doilea terminal.

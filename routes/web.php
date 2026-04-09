@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 
 // Redirecționează rădăcina către /quotes
 // routes/web.php
-
+Route::get('/', function () {
+    return redirect('/api/offer');
+});
 Route::view('api/offer', 'welcome'); // Frontend Vue.js
 Route::view('api/process-talon', 'welcome');
+
